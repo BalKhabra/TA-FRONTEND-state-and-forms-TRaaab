@@ -5,16 +5,19 @@ class App extends React.Component {
         super(props);
         this.state = {
             counter: 0,
+            step: 5,
+            max: 15,
         }
     }
     handleDecrement = () => {
         this.setState({
-            counter: this.state.counter -1,
+            counter: this.state.counter - this.state.step > this.state.max ? this.state.counter : this.state.counter - this.state.step
         });
     };
     handleIncrement = () => {
+        let {counter, step, max} = this.state;
         this.setState({
-            counter: this.state.counter +1,
+            counter: counter - step > max ? counter : counter + step,
         });
     };
     handleReset = () => {
@@ -22,57 +25,38 @@ class App extends React.Component {
             counter: 0,
         });
     };
-    //steps
-    handleStepsFive = () => {
-        this.setState({
-            counter: 5,
-        });
-    };
-    handleStepsTen = () => {
-        this.setState({
-            counter: 10,
-        });
-    };
-    handleStepsFifteen = () => {
-        this.setState({
-            counter: 15,
-        });
-
-    //increments    
-    };
-    handleFive = () => {
-        this.setState({
-            counter: this.state.counter +5,
-        });
-    };
-    handleTen = () => {
-        this.setState({
-            counter: this.state.counter +10,
-        });
-    };
-    handleFifteen = () => {
-        this.setState({
-            counter: this.state.counter +15,
-        });
-    };
-    render(){
+    render () {
         return (
-            <center>
-                <h1>Counter App</h1>
+            <div className='container'>
+            <h1>{this.state.counter}</h1>
+            <div className='steps'>
+                <h3>Steps</h3>
+                {[5, 10, 15].map((step) => (
+                    <button onClick={() => {
+                        this.setState({step : step});
+                    }}
+                    className={this.state.step === step ? 'active--step' : ''}>{step}</button>
+                ))}
+            </div>
 
-                <h2>{this.state.counter}</h2>
-                <div>
-                    <h2>Steps</h2>
-                    <button onClick={this.handleStepsFive}>5</button>
-                    <button onClick={this.handleStepsTen}>10</button>
-                    <button onClick={this.handleStepsFifteen}>15</button>
-                </div>
-                <button onClick={this.handleDecrement}>Decrement</button>
-                <button onClick={this.handleIncrement}>Increment</button>
-                <button onClick={this.handleReset}>Reset</button>
-            </center>
-        );
-    }
+            <div className='steps'>
+                <h3>Max</h3>
+                {[15, 100, 200].map((max) => (
+                    <button onClick={() => {
+                        this.setState({step : max});
+                    }}
+                    className={this.state.step === max ? 'active--step' : ''}>{max}</button>
+                ))}
+            </div>
+
+            <div className='buttons'>
+            <button onClick={this.handleDecrement}>Decrement</button>
+            <button onClick={this.handleIncrement}>Increment</button>
+            <button onClick={this.handleReset}>Reset</button>
+            </div>
+            </div>
+        )
+    };
 }
 
 export default App;
