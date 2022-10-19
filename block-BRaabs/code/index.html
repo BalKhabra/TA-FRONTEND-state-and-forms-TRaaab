@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+    <div id="root">
+    </div>
+    <script type = "text/babel">
+    let root = document.querySelector('root')
+
+    class App extends React.Component{
+        constructor(props){
+            super(props)
+            this.state = {
+                shipping: {
+                    address : "",
+                    zip:"",
+                    city:"",
+                    country:"",
+                },
+
+                billing: {
+                    address : "",
+                    zip:"",
+                    city:"",
+                    country:"",
+                },
+                error:{
+                    address:"",
+                },
+               isSame:false
+            }
+        }
+
+        handleInput = (event) => {
+            let {name,value} = event.target;
+            let error = this.state.error;
+            if(name === "address"){
+                error.address = value.length > 8 ? "" : "Address should be more than 8 characters"
+            }
+            this.setState({
+                error,
+                shipping: {...this.state.shipping, [name]: value},
+            });
+        };
+
+        isSame = () => {
+            return this.setState((prevState) => {
+                return{
+                    isSame : !prevState.isSame,
+                }
+            })
+        }
+
+        render(){
+            let { address } = this.state.error;
+            let billingAdress = this.state.isSame ? this.state.shipping : this.state.billing
+            return (
+                <>
+                <form >
+                    <section className ="flex">
+                        <h1 className = "heading-form">Shipping Address</h1>
+                        <label htmlFor = "address" className = "">
+                            Address
+                            </label>
+                            <input onChange = {this.handleInput} type = "text"  id = "address" name = "address" className = ""/>
+                            <span className = "">{address}</span>
+
+                            <label htmlFor = "zip" className = "">Zip/Postal Code</label>
+                            <input onChange = {this.handleInput} type = "number" name = "zip" id = "zip" className = ""/>
+
+                            <label htmlFor = "city" className = ""> City </label>
+                            <input onChange = {this.handleInput} type = "text" id = "city" name = "city" className = ""/>
+
+                            <label htmlFor = "country" className = "">Country</label>
+                            <input onChange = {this.handleInput} type = "text" id = "country" name = "country" className = ""/>
+                        </section>
+                        <section className ="flex">
+                        <h1 className = "heading-form">Shipping Address</h1>
+                        <label htmlFor = "address" className = "">
+                            Billing Address
+                            <label htmlFor = "same" >Same as shipping address</label>
+                            <input onClick = {this.isSame} type = "checkbox" id = "checkbox"/>
+                            </label>
+                            <input value = {billingAdress.address} type = "text"  id = "address" name = "address" className = ""/>
+                            <span className = "">{address}</span>
+
+                            <label htmlFor = "zip" className = "">Zip/Postal Code</label>
+                            <input value = {billingAdress.zip} type = "number" name = "zip" id = "zip" className = ""/>
+
+                            <label htmlFor = "city" className = ""> City </label>
+                            <input value = {billingAdress.city}  type = "text" id = "city" name = "city" className = ""/>
+
+                            <label htmlFor = "country" className = "">Country</label>
+                            <input value = {billingAdress.country}  type = "text" id = "country" name = "country" className = ""/>
+                        </section>
+                </form>
+                </>
+            )
+        }
+       
+    }
+
+    ReactDOM.render(<App/>,root)
+    let arr = [7,6,5,7,6,5,3,4,2,1]
+    function getUnique(arr){
+        var set = new Set(arr)
+        return [...set]
+    }
+    getUnique(arr);
+    </script>
+</body>
+</html>
